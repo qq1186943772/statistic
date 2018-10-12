@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Recharge">
+	
+	<sql id="tableName">
+		
+	</sql>
+	
+	<sql id="field">
+		id,	
+		batch_no,	
+		begin_time,	
+		end_time,	
+		inst_code,	
+		settle_date,
+		total_amount,
+		total_record
+	</sql>
+	
+	<sql id="fieldValue">
+		#{batch_no},	
+		#{begin_time},	
+		#{end_time},	
+		#{inst_code},	
+		#{settle_date},	
+		#{total_amount},
+		#{total_record}
+	</sql>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pageData" resultType="pageData">
+		select 
+			<include refid="field"></include>
+		from
+			<include refid="tableName"></include>
+		where id = #{id}
+	</select>
+	
+	<!-- 用户列表 -->
+	<select id="listPage" parameterType="page" resultType="java.util.Map">
+		select id,amount,app_seq,balance,balance_bef,card_no,card_type,card_category,
+		card_uid,create_time,load_counter,load_data_time,session_no,
+		status,tac,card_flag,update_time
+		from recharge_record_zuny
+	</select>
+	
+</mapper>

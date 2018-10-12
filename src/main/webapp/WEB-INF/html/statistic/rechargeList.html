@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<title></title>
+<link rel="shortcut icon" href="#" />
+<link href="static/js/layui/css/layui.css" type="text/css"
+	rel="stylesheet" />
+<link href="static/css/themes/default/easyui.css" type="text/css"
+	rel="stylesheet" />
+<link href="static/css/themes/icon.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="static/js/jquery.min.js"></script>
+<script type="text/javascript" src="static/js/view.js"></script>
+<script type="text/javascript" src="static/js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="static/js/layui/layui.js"></script>
+<script type="text/javascript" src="static/js/echarts.min.js"></script>
+<script type="text/javascript" src="static/js/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="static/js/view.js"></script>
+<style type="text/css">
+html {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+.center {
+	width: 100%;
+	height: 100%;
+}
+</style>
+</head>
+<body class="easyui-layout">
+	<div region="center" class="center" id="center"></div>
+</body>
+<script type="text/javascript">
+	
+	$("#center").datagrid({
+		fit:true,
+		rownumbers:true,
+		autoRowHeight:true,
+		striped:true,
+		fitColumns:true,
+		pageSize:30,
+		pagination:true,
+		pagePosition:"bottom",
+		pageList:[20,30,50,100],
+		loadMsg:"正在加载请稍后 ... ",
+		columns:[[
+			{field:'ck',checkbox:true} ,
+			{field:'amount',title:"总计",width:'15%',align:'center'} ,
+			{field:'app_seq',title:"排序",width:'15%',align:'center'} ,
+			{field:'balance',title:"余额",width:'15%',align:'center'} ,
+			{field:'balance_bef',title:"总余额",width:'15%',align:'center'} ,
+			{field:'card_no',title:"卡号",width:'15%',align:'center'},
+			{field:'card_type',title:"卡类别",width:'20%',align:'center'},
+			{field:'create_time',title:"充值时间",width:'20%',align:'center'},
+			{field:'load_counter',title:"加载副本",width:'20%',align:'center'},
+			{field:'load_date_time',title:"加载时间",width:'20%',align:'center'},
+			{field:'session_no',title:"会话编号",width:'20%',align:'center'},
+			{field:'status',title:"状态",width:'20%',align:'center'}
+		]]
+	});
+		
+	var opts = $("#center").datagrid('options');
+	var pager = $("#center").datagrid('getPager');
+	pager.pagination({
+		onSelectPage:function(pageNum, pageSize){
+			opts.pageNumber = pageNum;
+			opts.pageSize = pageSize;
+			var total = packAjax(pageNum,pageSize);
+			pager.pagination('refresh',{
+				total:total,
+				pageNumber:pageNum,
+				pageSize:pageSize
+			});
+		}
+	});
+	
+	packAjax(1,30);
+	
+	function packAjax(pageNum,pageSize){
+		var info = false;
+		var total = 1;
+		$.ajax({
+			type:"get",
+			url:"queryRechargePage",
+			dataType:"json",
+			async:false,
+			data:{
+				pageNum:pageNum,
+				pageSize:pageSize
+			},
+			success:function(data){
+				total = data.total;
+				if(info){
+					$("#center").datagrid("loadData",data.list)
+				}else{
+					$("#center").datagrid('loadData',data.list)
+					pager.pagination('refresh',{
+						total:total
+					});
+					info = true;
+				}
+				
+			}
+		});
+		return total;
+	}
+	
+</script>
+</html>

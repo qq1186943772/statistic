@@ -1,0 +1,47 @@
+body {
+    font-family:verdana,helvetica,arial,sans-serif;
+    padding:20px;
+    font-size:14px;
+    margin:0;
+}
+h2 {
+    font-size:18px;
+    font-weight:bold;
+    margin:0;
+    margin-bottom:15px;
+}
+.demo-info{
+	padding:0 0 12px 0;
+}
+.demo-tip{
+	display:none;
+}
+.label-top{
+    display: block;
+    height: 22px;
+    line-height: 22px;
+    vertical-align: middle;
+}
+
+/*滚动条*/
+	/* ::-webkit-scrollbar {  
+        width: 5px;  
+        height:10px;
+        background-color: #F5F5F5;  
+      }   */
+      /*定义滚动条轨道 内阴影+圆角*/  
+     /*  ::-webkit-scrollbar-track {  
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);  
+        background: #fff ;  
+      }   */
+      /*定义滑块 内阴影+圆角*/  
+     /*  ::-webkit-scrollbar-thumb {  
+        border-radius: 3px;  
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);  
+        background-color:#45A9F8 ;  
+      }   */
+      /* ::-webkit-scrollbar-thumb:hover {  
+        border-radius: 3px;  
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);  
+        background-color:rgba(7, 170, 247, 1);  
+      }  */

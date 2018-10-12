@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<title></title>
+		<link href="static/js/layui/css/layui.css" type="text/css" rel="stylesheet"/>
+		<link href="static/css/themes/default/easyui.css" type="text/css" rel="stylesheet" />
+		<link href="static/css/themes/icon.css" type="text/css" rel="stylesheet" />
+		<script type="text/javascript" src="static/js/jquery.min.js"></script>
+		<script type="text/javascript" src="static/js/view.js"></script>
+		<script type="text/javascript" src="static/js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="static/js/layui/layui.js"></script>
+		<link type="text/css"  rel="stylesheet" href="static/css/login.css"/>
+		<script type="text/javascript" src="static/js/view.js"></script>
+		<style type="text/css">
+			html{
+				width:100%;
+				height:100%;
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				width:100%;
+				height:100%;
+				margin: 0;
+				padding: 0;
+			}
+			.north{
+				width:100%;
+				height: 6%;
+			}
+			.west{
+				width:10%;
+				height: 94%;
+			}
+			.center{
+				width:90%;
+				height: 94%;
+				margin: 0px;
+				padding: 0px;
+			}
+			#table{
+				width: 100%;
+				height: 100%;
+			}
+			
+			#table > {
+				width: 100%;
+				height: 100%;
+			}
+			#table >.tabs-panels{
+				width: 100%;
+				height: 100%;
+			}
+			.panel > div{
+				width: 100%;
+				height: 100%;
+			}
+			.linkA{
+				width: 99%;
+				text-align: left;
+			}
+			
+			.accordionSon{
+				width: 100%;
+				height: 100%;
+				padding-left: 12px;
+				padding-right: 12px;
+				padding-top: 3px;
+			}
+			
+		</style>
+	</head>
+	<body class="easyui-layout" >
+		<div class="north" region="north"> 
+			标题栏
+		</div>
+		<div class="west" region="west">
+			 <div class="easyui-accordion" style="width:100%;height:100%;">
+		        <div title="充值统计" iconCls="icon-ok" selected="true" class="accordionSon"> 
+		        	<a class="easyui-linkbutton linkA" plain="true" iconCls="icon-cancel" onclick="addTabs(this)" src="goRecharge">充值金额统计</a>
+		        	<a class="easyui-linkbutton linkA" plain="true" iconCls="icon-cancel" onclick="testPage()" >测试分页</a>
+		        </div>
+		        <div title="设备分析" iconCls="icon-reload" class="accordionSon">
+					
+				</div>
+		        <div title="运营监控" class="accordionSon">
+		        
+		        </div>
+		    </div>
+		</div>
+		<div class="center" region="center">
+			<div id="table" class="easyui-tabs" fit="true">
+				<div title="首页" >
+					<p style="font-size:14px">首页展示的信息</p>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		
+		function addTabs(obj){
+			
+			var title = obj.innerText;
+			var iconcls = $(obj).attr("iconcls");
+			var src = $(obj).attr("src");
+			
+			if($("#table").tabs("exists",title)){
+				$("#table").tabs('select',title)
+			}else{
+				var html = '<iframe src="'+src+'" style="display:block;border-width:0px;width:100%;height:100%;margin: 0px;padding: 0px;"></iframe>';
+				$("#table").tabs("add",{
+					title:title,
+					iconCls:iconcls,
+					content:html,
+					closable:true,
+					tabWidth:'auto'
+				});
+			}
+			
+		}
+		
+		
+		function testPage(){
+			
+			$.ajax({
+				type:"get",
+				url:"queryRechargePage",
+				dataType:"json",
+				data:{
+					"showCount":50,
+					"currentPage":1
+				},
+				success:function(data){
+					console.log(data);
+				}
+			});
+		}
+		
+	</script>
+</html>
