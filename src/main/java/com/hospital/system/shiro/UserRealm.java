@@ -2,30 +2,30 @@ package com.hospital.system.shiro;
 
 import java.util.HashMap;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 public class UserRealm extends AuthorizingRealm {
 
 	private static HashMap<String, String> userInfo = new HashMap<>();
-
-	static {
-		userInfo.put("syad001", "123456dk");
-	}
-
-	@Override
-	public void setName(String name) {
-		super.setName("userRealm");
-	}
-
+	
+	@Resource(name="jdbcTemplate")
+	private JdbcTemplate jdbcTemplate;
+	
+	private String checkUsername = "select login_name from sys_user where login_name = ? ";
+	
+	private String checkPassword = "select login_name from sys_user where login_name = ? and login_pass = ? ";
+	
 	/**
 	 * 验证登录
 	 */
@@ -35,26 +35,21 @@ public class UserRealm extends AuthorizingRealm {
 		String password = new String((char[]) token.getCredentials()); // 得到密码
 
 		if (StringUtils.isNotEmpty(username)) {
-			boolean nameState = true;
-			for (String systemName : userInfo.keySet()) {
-				if (systemName.equals(username)) {
-					nameState = false;
-				}
-			}
-			if (nameState) {
+			try {
+				Object[] obj = {username};
+				jdbcTemplate.queryForMap(checkUsername,obj);
+			} catch (Exception e) {
+				e.printStackTrace();
 				throw new UnknownAccountException();
 			}
 		}
 
 		if (StringUtils.isNotEmpty(password)) {
-			boolean passState = true;
-			for (String systemName : userInfo.keySet()) {
-				if (userInfo.get(systemName).equals(password)) {
-					passState = false;
-				}
-			}
-			if (passState) {
-				throw new IncorrectCredentialsException();
+			try {
+				Object[] obj = {username,password};
+				jdbcTemplate.queryForMap(checkPassword,obj);
+			} catch (Exception e) {
+				throw new UnknownAccountException();
 			}
 		}
 

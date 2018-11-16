@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<title></title>
+<link rel="shortcut icon" href="#" />
+<link href="static/js/layui/css/layui.css" type="text/css"
+	rel="stylesheet" />
+<link href="static/css/themes/default/easyui.css" type="text/css"
+	rel="stylesheet" />
+<link href="static/css/themes/icon.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="static/js/jquery.min.js"></script>
+<script type="text/javascript" src="static/js/view.js"></script>
+<script type="text/javascript" src="static/js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="static/js/layui/layui.js"></script>
+<script type="text/javascript" src="static/js/echarts.min.js"></script>
+<script type="text/javascript" src="static/js/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="static/js/view.js"></script>
+<style type="text/css">
+html {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+.layui-container {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.row-padding {
+	padding: 10px;
+}
+</style>
+</head>
+<body class="layui-layout-body">
+	<div class="layui-layout layui-layout-admin">
+		<div class="layui-header layui-container layui-bg-gray">
+			<div class="layui-row">
+				<form id="selForm" class="layui-form-pane">
+					<div class="layui-col-md3 row-padding">
+						<label class="layui-form-label">用户编号</label>
+						<div class="layui-input-block">
+							<input type="text" name="user_code" id ="user_code" placeholder="请输入用户编号" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-col-md3 row-padding">
+						<label class="layui-form-label">用户名称</label>
+						<div class="layui-input-block">
+							<input type="text" name="user_name" id ="user_name" placeholder="请输入用户名称" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-col-md3 row-padding">
+						<label class="layui-form-label">用户电话</label>
+						<div class="layui-input-block">
+							<input type="text" name="user_phone"  id ="user_phone" placeholder="请输入用户电话" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-col-md2 row-padding layui-col-md-offset1">
+						<a href="#" class="layui-btn layui-btn-normal" onclick="selSubmit()">提交</a>
+						<button class="layui-btn layui-btn-normal" >重置</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="layui-row">
+		<table id="demo" lay-filter="test"></table>
+	</div>
+	<div id="dialog" style="display: none" class="layui-container">
+		<form class="layui-form layui-form-pane" id="submitForm"
+			lay-filter="subForm">
+			<div class="layui-row row-padding">
+				<div class="layui-col-md12">
+					<label class="layui-form-label">用户编号</label>
+					<div class="layui-input-block">
+						<input type="text" lay-verify="user_code" placeholder="请输入用户编号" autocomplete="off"
+							class="layui-input" name="user_code">
+					</div>
+				</div>
+			</div>
+			<div class="layui-row row-padding">
+				<div class="layui-col-md12">
+					<label class="layui-form-label">用户名称</label>
+					<div class="layui-input-block">
+						<input type="text" lay-verify="user_name" placeholder="请输入用户名称" autocomplete="off"
+							class="layui-input" name="user_name">
+					</div>
+				</div>
+			</div>
+			<div class="layui-row row-padding">
+				<div class="layui-col-md12">
+					<label class="layui-form-label">用户电话</label>
+					<div class="layui-input-block">
+						<input type="text" lay-verify="user_phone" placeholder="请输入用户电话" autocomplete="off"
+							class="layui-input" name="user_phone">
+					</div>
+				</div>
+			</div>
+			<div class="layui-row row-padding">
+				<div class="layui-col-md12">
+					<label class="layui-form-label">用户邮箱</label>
+					<div class="layui-input-block">
+						<input type="text" lay-verify="user_emall" placeholder="请输入用户邮箱" autocomplete="off"
+							class="layui-input" name="user_emall">
+					</div>
+				</div>
+			</div>
+			<div class="layui-row row-padding">
+				<div class="layui-col-md12">
+					<label class="layui-form-label">用户备注</label>
+					<div class="layui-input-block"> 
+						<input type="text" lay-verify="user_remark" placeholder="请输入用户备注" autocomplete="off"
+							class="layui-input" name="user_remark">
+					</div>
+				</div>
+			</div>
+			<div class="layui-row row-padding">
+				<div class="layui-col-md12">
+					<label class="layui-form-label">登录账号</label>
+					<div class="layui-input-block">
+						<input type="text" lay-verify="login_name" placeholder="请输入用户登录账号" autocomplete="off"
+							class="layui-input" name="login_name">
+					</div>
+				</div>
+			</div>
+			<div class="layui-row row-padding">
+				<div class="layui-col-md12">
+					<label class="layui-form-label">登录密码</label>
+					<div class="layui-input-block">
+						<input type="text" lay-verify="login_pass" placeholder="请输入用户登录密码" autocomplete="off"
+							class="layui-input" name="login_pass">
+					</div>
+				</div>
+			</div>
+			<div class="layui-row row-padding ">
+				<div class="layui-col-md6 layui-col-md-offset6">
+					<button class="layui-btn layui-btn-normal " lay-filter="info" lay-submit>提交</button>
+					<a href="#" class="layui-btn layui-btn-normal" onclick="cancel()">取消</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript">
+	var subUrl ;
+	var addView ;
+	var table ;
+	
+	layui.use([ 'table', 'form' ], function() {
+
+		table = layui.table;
+		var myform = layui.form;
+		
+		myform.render(null, "subForm");
+
+		myform.on('submit(info)', function(data) {
+			layui.use('jquery', function() {
+				var $ = layui.$;
+				$.ajax({
+					type:'POST',
+					url : subUrl, // ajax请求路径  
+					dataType:"json",
+					data:data.field,
+					success : function(message) {
+						var msg = "提交失败";
+						if (message) {
+							layer.close(addView);
+							msg = "提交成功";
+							selSubmit();
+						}
+						layer.msg(msg, {
+							time : 1500,
+							offset : 'rb',
+							anim : 2
+						});
+					}
+				});
+			});
+			return false;//禁止跳转，否则会提交两次，且页面会刷新
+		});
+
+		layer.config({
+			type : 1,
+			title : "录入信息",
+			area : '400px',
+			btn : [],
+			content : $("#dialog").html()
+		});
+
+		//第一个实例
+		table.render({
+			elem : '#demo',
+			id:"demo",
+			height : 650,
+			toolbar : 'default',
+			url : 'userList' //数据接口
+			,page : true //开启分页
+			,limit : 20
+			,limits : [ 10, 20, 30, 40, 50, 60, 70, 80, 90 ],
+			cols : [ [ //表头
+			{
+				type : 'checkbox'
+			}, {
+				field : 'user_code',
+				title : '用户编码',
+				width : '12%'
+			}, {
+				field : 'user_name',
+				title : '用户名称',
+				width : '12%'
+			}, {
+				field : 'user_phone',
+				title : '用户电话',
+				width : '12%'
+			}, {
+				field : 'user_emall',
+				title : '用户邮箱',
+				width : '12%'
+			}, {
+				field : 'user_remark',
+				title : '用户备注',
+				width : '12%'
+			}, {
+				field : 'login_name',
+				title : '用户登录账号',
+				width : '12%'
+			}, {
+				field : 'login_pass',
+				title : '用户登录密码',
+				width : '12%'
+			}, {
+				field : 'state',
+				title : '用户状态'
+			} ] ],
+			parseData : function(data) {
+				var array = data['list'];
+				return {
+					"code" : "",
+					"msg" : "查找用户列表中...",
+					"count" : array.length,
+					"data" : array
+				};
+			}
+		});
+
+		table.on('toolbar()', function(obj) {
+			var checkStatus = table.checkStatus(obj.config.id);
+			switch (obj.event) {
+			case 'add':
+				add();
+				break;
+			case 'delete':
+				del(checkStatus['data']);
+				break;
+			case 'update':
+				edit(checkStatus['data'], myform)
+				break;
+			}
+			;
+		});
+
+	});
+
+	function add() {
+		subUrl = "userSave";
+		addView = layer.open();
+	}
+
+	function edit(data, myform) {
+		subUrl = "userUpdate";
+		if (data.length == 1) {
+			var obj = data[0];
+			addView = layer.open(); // 注意要先打开 窗口， 打开窗后会清空表单
+			myform.val("subForm", {
+				"user_code" : obj['user_code'],
+				"user_name" : obj['user_name'],
+				"user_phone" : obj['user_phone'],
+				"user_emall" : obj['user_emall'],
+				"user_remark" : obj['user_remark'],
+				"login_name" : obj['login_name'],
+				"login_pass" : obj['login_pass']
+			})
+		} else {
+			layer.msg('您需要选中，或者只能选中一行进行编辑');
+		}
+	}
+
+	function del(checkStatus) {
+		var ids = [];
+		for(var i = 0;i<checkStatus.length;i++){
+			var obj = checkStatus[i];
+			ids.push(obj['user_code']);
+		}
+		console.log(JSON.stringify(ids));
+		$.ajax({
+			headers: {
+		        'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    },
+			type : "POST",
+			url : "userDeleteNum",
+			data : JSON.stringify(ids),
+			dataType : "json",
+			success : function(message) {
+				var msg = "删除失败";
+				if (message) {
+					msg = "删除成功";
+					selSubmit()
+				}
+				layer.msg(msg, {
+					time : 1500,
+					offset : 'rb',
+					anim : 2
+				});
+			}
+		})
+	}
+	
+	function selSubmit(){
+		var obj = {};
+		var user_code = $("#user_code").val();
+		var user_name = $("#user_name").val();
+		var user_phone = $("#user_phone").val();
+		
+		if(user_code != "" && user_code != null){
+			obj['user_code'] = user_code;
+		}
+		if(user_name != "" && user_name != null){
+			obj['user_name'] = user_name;
+		}
+		if(user_phone != "" && user_phone != null){
+			obj['user_phone'] = user_phone;
+		}
+		reloadTable('demo',table,obj);
+	}
+	
+	function cancel(){
+		layer.close(addView);
+	}
+	
+	function reloadTable(tableName,LayTable,whereObj){
+		LayTable.reload(tableName, {
+			where: whereObj //设定异步数据接口的额外参数，任意设
+			,page: {
+			  curr: 1 //重新从第 1 页开始
+			}
+		});
+	}
+	
+</script>
+</html>

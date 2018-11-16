@@ -1,8 +1,11 @@
 package com.hospital.system.user;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -18,13 +21,19 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.servlet.ServletContextSupport;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageInfo;
+
 @Controller
 public class UserController {
+	
+	@Resource(name="userService")
+	UserService<Map<String, Object>> userService;
 	
 	@ResponseBody
 	@RequestMapping(value="/userLogin",method=RequestMethod.POST)
@@ -55,8 +64,6 @@ public class UserController {
 	@RequestMapping(value="/userLogOut",method=RequestMethod.GET)
 	public String userLogOut(HttpServletRequest request,HttpServletResponse response) {
 		
-		System.out.println(0123);
-		
 		try {
 			new LogoutFilter() {
 				
@@ -86,11 +93,43 @@ public class UserController {
 		return "login";
 	}
 	
+	@RequestMapping(value = "/goUser")
+	public String goUser(){
+		return "system/user";
+	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/userList")
+	public PageInfo<Map<String, Object>> userList(@RequestParam Map<String, Object> user ,PageInfo<Map<String, Object>> page){
+		page.setPageSize(Integer.valueOf(user.get("limit")+""));
+		page.setPageNum(Integer.valueOf(user.get("page")+""));
+		return userService.pageList("User.findById", page ,user);
+	}
 	
-	/*@RequestMapping(value="/goLogin")
-	public String goLogin() {
-		return "login";
-	}*/
+	@ResponseBody
+	@RequestMapping(value = "/userSave")
+	public boolean userSave(@RequestParam Map<String, Object> user ,PageInfo<Map<String, Object>> page){
+		user.put("state", 0);
+		return userService.add("User.userSave",user);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/userUpdate")
+	public boolean userUpdate(@RequestParam Map<String, Object> user ,PageInfo<Map<String, Object>> page){
+		return userService.edit("User.userUpdate",user);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/userDelete")
+	public boolean userDelete(String id ,PageInfo<Map<String, Object>> page){
+		return userService.deleteOne("User.userDelete",id);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/userDeleteNum")
+	public boolean userDeleteNum(@RequestBody List<String> ids ,PageInfo<Map<String, Object>> page){
+		System.out.println("ids : " + ids.toString() );
+		return userService.deleteNum("User.userDeleteNum",ids);
+	}
 	
 }

@@ -1,186 +1,102 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-		<title></title>
-		<link rel="shortcut icon" href="#" />
-		<link href="static/js/layui/css/layui.css" type="text/css" rel="stylesheet"/>
-		<link href="static/css/themes/default/easyui.css" type="text/css" rel="stylesheet" />
-		<link href="static/css/themes/icon.css" type="text/css" rel="stylesheet" />
-		<script type="text/javascript" src="static/js/jquery.min.js"></script>
-		<script type="text/javascript" src="static/js/view.js"></script>
-		<script type="text/javascript" src="static/js/jquery.easyui.min.js"></script>
-		<script type="text/javascript" src="static/js/layui/layui.js"></script>
-		<link type="text/css"  rel="stylesheet" href="static/css/login.css"/>
-		<script type="text/javascript" src="static/js/view.js"></script>
-		<style type="text/css">
-			html{
-				width:100%;
-				height:100%;
-				margin: 0;
-				padding: 0;
-			}
-			
-			body{
-				width:100%;
-				height:100%;
-				margin: 0;
-				padding: 0;
-				
-			}
-			
-			.north{
-			
-				width:100%;
-				height: 6%;
-				background-color:#74b1f2;
-				display: flex;   			
-				flex-direction: column;
-				justify-content: center;
-				
-			}
-			
-			.quitDiv{
-				width:100%;
-				flex-direction: row;
-				align-items: center;		
-			}
-			
-			.quitDiv > p{
-				width:auto;
-				height:auto;
-				font-size:0.25rem;
-				font-family: "楷体";
-				letter-spacing:0.04rem;
-				margin-left: 0.4rem;
-				color:#FFFFFF;
-				font-weight: bold;
-				display: block;
-				float: left;
-				
-			}
-			
-			.quitButton{
-				width:0.8rem;
-				height:0.2rem;
-				margin-right:0.4rem;	
-				display: block;
-				float: right;
-				font-size: 0.1rem;
-			}
-			
-			.west{
-				width:10%;
-				height: 94%;
-			}
-			
-			.center{
-				width:90%;
-				height: 94%;
-				margin: 0px;
-				padding: 0px;
-			}
-			
-			#table{
-				width: 100%;
-				height: 100%;
-			}
-			
-			#table >.tabs-panels{
-			
-				width: 100%;
-				height: 100%;
-			}
-			
-			.panel > div{
-				width: 100%;
-				height: 100%;
-			}
-			
-			.linkA{
-				width: 99%;
-				text-align: left;
-			}
-			
-			.accordionSon{
-				width: 100%;
-				height: 100%;
-				padding-left: 12px;
-				padding-right: 12px;
-				padding-top: 3px;
-			}
-			
-		</style>
-	</head>
-	<body class="easyui-layout" >
-		<div class="north" region="north" border="false"> 
-			 <div class="quitDiv">
-				 <p> 点库运维分析平台	</p>
-				 <a href="userLogOut" class="easyui-linkbutton quitButton">退出登录</a>
-			 </div>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<title></title>
+<link rel="shortcut icon" href="#" />
+<link href="static/js/layui/css/layui.css" type="text/css"
+	rel="stylesheet" />
+<!-- 		<link href="static/css/themes/default/easyui.css" type="text/css" rel="stylesheet" /> -->
+<!-- 		<link href="static/css/themes/icon.css" type="text/css" rel="stylesheet" /> -->
+<script type="text/javascript" src="static/js/jquery.min.js"></script>
+<!-- 		<script type="text/javascript" src="static/js/jquery.easyui.min.js"></script> -->
+<script type="text/javascript" src="static/js/layui/layui.js"></script>
+<script type="text/javascript" src="static/js/view.js"></script>
+<style type="text/css">
+.layui-container {
+	margin: 0;
+	padding: 0;
+	width: 100%;	
+}
+.layui-body{
+	overflow: visible;
+}
+iframe{
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+</style>
+</head>
+<body class="layui-layout-body">
+	<div class="layui-layout layui-layout-admin">
+		<div class="layui-header">
+			<div class="layui-logo">运维统计分析后台</div>
+			<!-- 头部区域（可配合layui已有的水平导航） -->
+			<ul class="layui-nav layui-layout-left">
+				<li class="layui-nav-item layui-this"><a href="">系统管理</a></li>
+				<li class="layui-nav-item"><a href="">充值分析</a></li>
+				<li class="layui-nav-item"><a href="">城市分析</a></li>
+				<li class="layui-nav-item"><a href="">问题分析</a></li>
+				<li class="layui-nav-item"><a href="javascript:;">其它系统</a>
+					<dl class="layui-nav-child">
+						<dd>
+							<a href="">运维统计</a>
+						</dd>
+						<dd>
+							<a href="">故障统计</a>
+						</dd>
+						<dd>
+							<a href="">BUG提交</a>
+						</dd>
+					</dl></li>
+			</ul>
+			<ul class="layui-nav layui-layout-right">
+				<li class="layui-nav-item"><a href="javascript:;"> <img
+						src="http://t.cn/RCzsdCq" class="layui-nav-img"> 玉雄
+				</a>
+					<dl class="layui-nav-child">
+						<dd>
+							<a href="">基本资料</a>
+						</dd>
+						<dd>
+							<a href="">安全设置</a>
+						</dd>
+					</dl></li>
+				<li class="layui-nav-item"><a href="">退出</a></li>
+			</ul>
 		</div>
-		<div class="west" region="west" border="false">
-			 <div class="easyui-accordion" style="width:100%;height:auto;" multiple="true" >
-		        <div title="充值统计" iconCls="icon-ok" selected="true" class="accordionSon"> 
-		        	<a class="easyui-linkbutton linkA" plain="true" iconCls="icon-tip" onclick="addTabs(this)" src="goRecharge">充值金额统计</a>
-		        	<a class="easyui-linkbutton linkA" plain="true" iconCls="icon-search" onclick="addTabs(this)" src="goRechargeList" >充值数据分析</a>
-		        </div>
-		        <div title="设备分析" iconCls="icon-reload" class="accordionSon">
-					<a class="easyui-linkbutton linkA" plain="true" iconCls="icon-search" onclick="addTabs(this)" >设备数据分析</a>
-				</div>
-		        <div title="运营监控" class="accordionSon">
-		        	<a class="easyui-linkbutton linkA" plain="true" iconCls="icon-search" onclick="addTabs(this)" >充值数据分析</a>
-		        </div>
-		    </div>
-		</div>
-		<div class="center" region="center" border="false">
-			<div id="table" class="easyui-tabs" fit="true">
-				<div title="首页" >
-					<p style="font-size:14px">首页展示的信息</p>
-				</div>
+
+		<div class="layui-side layui-bg-black">
+			<div class="layui-side-scroll">
+				<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+				<ul class="layui-nav layui-nav-tree" lay-filter="test">
+					<li class="layui-nav-item"><a href="goUser" target="home">用户管理</a></li>
+					<li class="layui-nav-item"><a href="" target="home">角色管理</a></li>
+					<li class="layui-nav-item"><a href="" target="home">权限管理</a></li>
+					<li class="layui-nav-item"><a href="" target="home">角色权限</a></li>
+				</ul>
 			</div>
 		</div>
-	</body>
-	<script type="text/javascript">
-		
-		function addTabs(obj){
-			
-			var title = obj.innerText;
-			var iconcls = $(obj).attr("iconcls");
-			var src = $(obj).attr("src");
-			
-			if($("#table").tabs("exists",title)){
-				$("#table").tabs('select',title)
-			}else{
-				var html = '<iframe src="'+src+'" style="display:block;border-width:0px;width:100%;height:100%;margin: 0px;padding: 0px;"></iframe>';
-				$("#table").tabs("add",{
-					title:title,
-					iconCls:iconcls,
-					content:html,
-					closable:true,
-					tabWidth:'auto'
-				});
-			}
-			
-		}
-		
-		
-		function testPage(){
-			
-			$.ajax({
-				type:"get",
-				url:"queryRechargePage",
-				dataType:"json",
-				data:{
-					"showCount":50,
-					"currentPage":1
-				},
-				success:function(data){
-					console.log(data);
-				}
-			});
-		}
-		
-	</script>
+
+		<div class="layui-body">
+			<iframe src="" name="home"></iframe>
+		</div>
+
+		<div class="layui-footer">
+			<!-- 底部固定区域 -->
+			© layui.com - 底部固定区域
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	//注意：导航 依赖 element 模块，否则无法进行功能性操作
+	layui.use('element', function() {
+		var element = layui.element;
+
+	});
+</script>
 </html>
