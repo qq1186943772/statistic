@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Role">
+	
+	<sql id="tableName">
+		sys_role
+	</sql>
+	
+	<sql id="field">
+		code,	
+		name,	
+		remark
+	</sql>
+	
+	<sql id="fieldValue">
+		#{code},	
+		#{name},	
+		#{remark}
+	</sql>
+	
+	<!-- 获取用户列表   -->
+	<select id="findById" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+			<include refid="field"></include>
+		from
+			<include refid="tableName"></include>
+		<where>
+			<if test=" name != null and name !='' "> name like CONCAT('%',#{name},'%') </if>  
+			<if test=" code != null and code !='' "> code like CONCAT('%',#{code},'%') </if>
+		</where>
+	</select>
+	
+	<select id="roleSave" parameterType="java.util.Map" >
+		insert into 
+			<include refid="tableName"></include>
+			(
+				<include refid="field"></include>
+			)
+			values(
+				<include refid="fieldValue"></include>
+			)
+	</select>
+	
+	<select id="roleUpdate" parameterType="java.util.Map" >
+		update   <include refid="tableName"></include>
+			set code = #{code},
+			name = #{name},
+			remark = #{remark}
+		where code = #{code}
+	</select>
+	
+	<select id="roleDelete" parameterType="String" >
+		delete from  <include refid="tableName"></include>
+		where code = #{id}
+	</select>
+	
+	<select id="roleDeleteNum" parameterType="java.util.List" >
+		delete from  <include refid="tableName"></include>
+		where code in 
+		 <foreach collection="list" index="index" item="item"
+            open="(" separator="," close=")">
+            #{item}
+		</foreach>
+	</select>
+	
+</mapper>

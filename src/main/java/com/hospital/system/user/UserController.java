@@ -125,7 +125,6 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "/userDeleteNum")
 	public boolean userDeleteNum(@RequestBody List<String> ids ,PageInfo<Map<String, Object>> page){
-		System.out.println("ids : " + ids.toString() );
 		return userService.deleteNum("User.userDeleteNum",ids);
 	}
 	

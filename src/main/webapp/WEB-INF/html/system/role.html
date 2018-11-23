@@ -61,8 +61,8 @@ body {
 	
 	function configBody(myform,table){
 	
-		var field = ["code","name","remake"];
-		var names = ["-code","-name","remake"];
+		var field = ["code","name","remark"];
+		var names = ["-code","-name","remark"];
 		var title = ["角色编码","角色名称","角色备注"];
 		var width = ["20","20"];	//  宽度比 字段 标题少一个 用作 沾满最后空余
 		var event = {"add":"roleSave","edit":"roleUpdate","del":"roleDel","sel":"roleList"};
@@ -76,10 +76,8 @@ body {
 		layerConfig();						// 初始化弹出框 
 		
 		var cols = [];				
-		
 		cols.push(createCols(field,title,width));
-		
-		tableConfig(table,event['sel'],"#demo","demo",event,cols);	// 初始化 数据表格 
+		tableConfig(table,event['sel'],"#demo","demo",event,cols,myform,formFilter);	// 初始化 数据表格 
 		
 	}
 	

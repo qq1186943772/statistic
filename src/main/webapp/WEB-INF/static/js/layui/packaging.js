@@ -13,12 +13,13 @@ function add(addUrl) {
 // data 数据表格中选中项
 // myform 需要填充的 表单对象
 // editUrl 修改的路径
-function edit(data, myform,editUrl) {
+function edit(data, myform,editUrl,tableId) {
 	subUrl = editUrl;		// 修改的路径
 	if (data.length == 1) {		// 修改时 只能修改一条
 		var obj = data[0];
 		addView = layer.open(); // 注意要先打开 窗口， 打开窗后会清空表单
-		myform.val("subForm", obj);  // 想表单中填充数据 
+		
+		myform.val(tableId, obj);  // 想表单中填充数据 
 	} else {
 		layer.msg('您需要选中，或者只能选中一行进行编辑');
 	}
@@ -63,16 +64,14 @@ function del(checkStatus,delUrl) {
 function selSubmit(){
 	var names = selName;
 	var obj = {};
-	
-	for(var i = 0 ;i < names.lenght;i++){
+	for(var i = 0 ;i < names.length;i++){
 		var field = $("#"+names[i]).val();
 		if(field != "" && field != null){
 			obj[names[i]] = field;
 		}
 	}
-	
+	console.log(obj);
 	reloadTable(tableObj.tableId,tableObj.tableEntity,obj);
-	
 }
 
 // 增加/修改的关闭窗口
@@ -275,7 +274,11 @@ function createCols(field,title,width){
 // 参数  listUrl 数据表格的接口地址
 // 参数  tagTable 需要初始化的 label 标签
 // 参数  tableId 给这个 layui tabel 的ID
-function tableConfig(table,listUrl,tagTable,tableId,event,cols){
+// 参数  event 给这个 layui tabel 按钮对应的事件，即事件对应的地址
+// 参数  cols 给这个 layui tabel 的 表头数据
+// 参数  myform 给这个 layui tabel 对应的增删改查的表格对象
+// 参数  formFilter 给这个 layui tabel 对应的增删改查的表格 的 ID
+function tableConfig(table,listUrl,tagTable,tableId,event,cols,myform,formFilter){
 	tableObj = {tableEntity:table,tableId:tableId};
 	//第一个实例
 	table.render({
@@ -289,6 +292,7 @@ function tableConfig(table,listUrl,tagTable,tableId,event,cols){
 		,limits : [ 10, 20, 30, 40, 50, 60, 70, 80, 90 ]
 		,cols :cols // 表头
 		,parseData : function(data) {
+			console.log(data);
 			var array = data['list'];
 			return {
 				"code" : "",
@@ -309,7 +313,7 @@ function tableConfig(table,listUrl,tagTable,tableId,event,cols){
 			del(checkStatus['data'],event['del']);
 			break;
 		case 'update':
-			edit(checkStatus['data'], myform,event['edit'])
+			edit(checkStatus['data'], myform,event['edit'],formFilter)
 			break;
 		}
 		;

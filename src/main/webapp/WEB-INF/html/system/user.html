@@ -284,7 +284,8 @@ body {
 		if (data.length == 1) {
 			var obj = data[0];
 			addView = layer.open(); // 注意要先打开 窗口， 打开窗后会清空表单
-			myform.val("subForm", {
+			 myform.val("subForm", obj);
+			/* myform.val("subForm", {
 				"user_code" : obj['user_code'],
 				"user_name" : obj['user_name'],
 				"user_phone" : obj['user_phone'],
@@ -292,7 +293,7 @@ body {
 				"user_remark" : obj['user_remark'],
 				"login_name" : obj['login_name'],
 				"login_pass" : obj['login_pass']
-			})
+			}) */
 		} else {
 			layer.msg('您需要选中，或者只能选中一行进行编辑');
 		}

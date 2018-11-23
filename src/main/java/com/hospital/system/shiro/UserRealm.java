@@ -1,7 +1,5 @@
 package com.hospital.system.shiro;
 
-import java.util.HashMap;
-
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
@@ -17,7 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 public class UserRealm extends AuthorizingRealm {
 
-	private static HashMap<String, String> userInfo = new HashMap<>();
+	/*private static HashMap<String, String> userInfo = new HashMap<>();*/
 	
 	@Resource(name="jdbcTemplate")
 	private JdbcTemplate jdbcTemplate;
