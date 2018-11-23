@@ -15,6 +15,7 @@
 <script type="text/javascript" src="static/js/view.js"></script>
 <script type="text/javascript" src="static/js/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="static/js/layui/layui.js"></script>
+<script type="text/javascript" src="static/js/layui/packaging.js"></script>
 <script type="text/javascript" src="static/js/echarts.min.js"></script>
 <script type="text/javascript" src="static/js/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="static/js/view.js"></script>
@@ -46,343 +47,40 @@ body {
 </style>
 </head>
 <body class="layui-layout-body">
-	<div class="layui-layout layui-layout-admin">
-		<div class="layui-header layui-container layui-bg-gray">
-			<div class="layui-row">
-				<form id="selForm" class="layui-form-pane">
-					<div class="layui-col-md3 row-padding">
-						<label class="layui-form-label">用户编号</label>
-						<div class="layui-input-block">
-							<input type="text" name="user_code" id ="user_code" placeholder="请输入用户编号" autocomplete="off" class="layui-input">
-						</div>
-					</div>
-					<div class="layui-col-md3 row-padding">
-						<label class="layui-form-label">用户名称</label>
-						<div class="layui-input-block">
-							<input type="text" name="user_name" id ="user_name" placeholder="请输入用户名称" autocomplete="off" class="layui-input">
-						</div>
-					</div>
-					<div class="layui-col-md3 row-padding">
-						<label class="layui-form-label">用户电话</label>
-						<div class="layui-input-block">
-							<input type="text" name="user_phone"  id ="user_phone" placeholder="请输入用户电话" autocomplete="off" class="layui-input">
-						</div>
-					</div>
-					<div class="layui-col-md2 row-padding layui-col-md-offset1">
-						<a href="#" class="layui-btn layui-btn-normal" onclick="selSubmit()">提交</a>
-						<button class="layui-btn layui-btn-normal" >重置</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<div class="layui-row">
+	<div class="layui-row" id="dataGrid">
 		<table id="demo" lay-filter="test"></table>
-	</div>
-	<div id="dialog" style="display: none" class="layui-container">
-		<form class="layui-form layui-form-pane" id="submitForm"
-			lay-filter="subForm">
-			<div class="layui-row row-padding">
-				<div class="layui-col-md12">
-					<label class="layui-form-label">用户编号</label>
-					<div class="layui-input-block">
-						<input type="text" lay-verify="user_code" placeholder="请输入用户编号" autocomplete="off"
-							class="layui-input" name="user_code">
-					</div>
-				</div>
-			</div>
-			<div class="layui-row row-padding">
-				<div class="layui-col-md12">
-					<label class="layui-form-label">用户名称</label>
-					<div class="layui-input-block">
-						<input type="text" lay-verify="user_name" placeholder="请输入用户名称" autocomplete="off"
-							class="layui-input" name="user_name">
-					</div>
-				</div>
-			</div>
-			<div class="layui-row row-padding">
-				<div class="layui-col-md12">
-					<label class="layui-form-label">用户电话</label>
-					<div class="layui-input-block">
-						<input type="text" lay-verify="user_phone" placeholder="请输入用户电话" autocomplete="off"
-							class="layui-input" name="user_phone">
-					</div>
-				</div>
-			</div>
-			<div class="layui-row row-padding">
-				<div class="layui-col-md12">
-					<label class="layui-form-label">用户邮箱</label>
-					<div class="layui-input-block">
-						<input type="text" lay-verify="user_emall" placeholder="请输入用户邮箱" autocomplete="off"
-							class="layui-input" name="user_emall">
-					</div>
-				</div>
-			</div>
-			<div class="layui-row row-padding">
-				<div class="layui-col-md12">
-					<label class="layui-form-label">用户备注</label>
-					<div class="layui-input-block"> 
-						<input type="text" lay-verify="user_remark" placeholder="请输入用户备注" autocomplete="off"
-							class="layui-input" name="user_remark">
-					</div>
-				</div>
-			</div>
-			<div class="layui-row row-padding">
-				<div class="layui-col-md12">
-					<label class="layui-form-label">登录账号</label>
-					<div class="layui-input-block">
-						<input type="text" lay-verify="login_name" placeholder="请输入用户登录账号" autocomplete="off"
-							class="layui-input" name="login_name">
-					</div>
-				</div>
-			</div>
-			<div class="layui-row row-padding">
-				<div class="layui-col-md12">
-					<label class="layui-form-label">登录密码</label>
-					<div class="layui-input-block">
-						<input type="text" lay-verify="login_pass" placeholder="请输入用户登录密码" autocomplete="off"
-							class="layui-input" name="login_pass">
-					</div>
-				</div>
-			</div>
-			<div class="layui-row row-padding ">
-				<div class="layui-col-md6 layui-col-md-offset6">
-					<button class="layui-btn layui-btn-normal " lay-filter="info" lay-submit>提交</button>
-					<a href="#" class="layui-btn layui-btn-normal" onclick="cancel()">取消</a>
-				</div>
-			</div>
-		</form>
 	</div>
 </body>
 <script type="text/javascript">
 	
-	var subUrl ;		// 提交的 url
-	var addView ;		// 打开弹窗的标记
-	var table ;			// 标记的表单
-	
 	layui.use([ 'table', 'form' ], function() {
 
-		table = layui.table;
-		var myform = layui.form;
-		
-		configBody(myform,table);
+		configBody(layui.form,layui.table);
 		
 	});
 	
 	function configBody(myform,table){
 	
 		var field = ["code","name","remake"];
-		var field = ["code","name","remake"];
+		var names = ["-code","-name","remake"];
 		var title = ["角色编码","角色名称","角色备注"];
 		var width = ["20","20"];	//  宽度比 字段 标题少一个 用作 沾满最后空余
-		var event = {"add":"userUpdate","edit":"userUpdate","del":"userDeleteNum","sel":"userList"};
+		var event = {"add":"roleSave","edit":"roleUpdate","del":"roleDel","sel":"roleList"};
 		
-		formConfig(myform,"info");
+		var formFilter = "info";
 		
-		layerConfig();
+		createSelAddHmtl(names,title,formFilter);		// 创建页面内容  
 		
-		var cols = [];
+		formConfig(myform,formFilter);			// 初始化 form 
+		
+		layerConfig();						// 初始化弹出框 
+		
+		var cols = [];				
+		
 		cols.push(createCols(field,title,width));
 		
-		tableConfig(table,event['sel'],"#demo","demo");
+		tableConfig(table,event['sel'],"#demo","demo",event,cols);	// 初始化 数据表格 
 		
-	}
-	
-	//  增加的方法
-	function add(addUrl) {
-		subUrl = addUrl;		//增加的路径
-		addView = layer.open();		//打开增加窗口，不用初始化表格，会自动初始化
-	}
-
-	// 修改的方法
-	// data 数据表格中选中项
-	// myform 需要填充的 表单对象
-	// editUrl 修改的路径
-	function edit(data, myform,editUrl) {	
-		subUrl = editUrl;		// 修改的路径
-		if (data.length == 1) {		// 修改时 只能修改一条
-			var obj = data[0];
-			addView = layer.open(); // 注意要先打开 窗口， 打开窗后会清空表单
-			myform.val("subForm", obj);  // 想表单中填充数据 
-		} else {
-			layer.msg('您需要选中，或者只能选中一行进行编辑');
-		}
-	}
-
-	// 删除的方法 
-	// 参数  checkStatus 列表选中项
-	// 参数  delUrl  删除的路径 
-	function del(checkStatus,delUrl) {
-		var ids = [];			// 多条删除
-		for(var i = 0;i<checkStatus.length;i++){
-			var obj = checkStatus[i];
-			ids.push(obj['user_code']);
-		}
-		
-		$.ajax({
-			headers: {	// 后端自动转换 前段传过去的 json 字符串，传输格式修改为 JSON
-		        'Accept': 'application/json',
-		        'Content-Type': 'application/json'
-		    },
-			type : "POST",
-			url : delUrl,
-			data : JSON.stringify(ids),		// data 直接指向 JSON 字符串
-			dataType : "json",
-			success : function(message) {
-				var msg = "删除失败";
-				if (message) {
-					msg = "删除成功";
-					selSubmit()
-				}
-				layer.msg(msg, {			// 修改提示框在 右下角
-					time : 1500,
-					offset : 'rb',
-					anim : 2
-				});
-			}
-		})
-	}
-	
-	// 搜索的方法  
-	// 参数  fields 需要搜索的字段的 数组  
-	function selSubmit(fields){
-		var obj = {};
-		
-		for(var i = 0 ;i < names.lenght;i++){
-			var field = $("#"+names[i]).val();
-			if(field != "" && field != null){
-				obj[names[i]] = field;
-			}
-		}
-		
-		reloadTable('demo',table,obj);
-		
-	}
-	
-	// 增加/修改的关闭窗口
-	function cancel(field,title,width){
-		layer.close(addView);
-	}
-	
-	// 表单初始化
-	// 参数  myform 操作的表单对象
-	// 参数 submitId 监听那个一个提交按钮
-	function formConfig(myform,submitId){
-		myform.render(null, "subForm");				//初始化所有列
-
-		myform.on('submit('+submitId+')', function(data) {	// 表单提交事件监听
-			layui.use('jquery', function() {
-				var $ = layui.$;
-				$.ajax({
-					type:'POST',
-					url : subUrl, // ajax请求路径  
-					dataType:"json",
-					data:data.field,
-					success : function(message) {
-						var msg = "提交失败";
-						if (message) {
-							layer.close(addView);
-							msg = "提交成功";
-							selSubmit();
-						}
-						layer.msg(msg, {
-							time : 1500,
-							offset : 'rb',
-							anim : 2
-						});
-					}
-				});
-			});
-			return false;//禁止跳转，否则会提交两次，且页面会刷新
-		});
-	}
-	
-	// 弹出信息框初始化
-	function layerConfig(){
-		layer.config({
-			type : 1,
-			title : "录入信息",
-			area : '400px',
-			btn : [],
-			content : $("#dialog").html()
-		});
-	}
-	
-	// 创建表头
-	// 参数  field 表头的字段
-	// 参数  title 表头的标题
-	// 参数  width 表头的宽度
-	function createCols(field,title,width){
-		
-		var col = [{type : 'checkbox'}];
-		
-		for(var i = 0;i<field.length;i++){
-			var obj ;
-			if(i != Number(field.length) -1){
-				obj = {field:field[i],title:title[i],width:width[i]+'%'} ;
-			}else{
-				obj = {field:field[i],title:title[i]} ;  // 最后一个 不设置宽度 用来做屏幕适配
-			}
-		}
-		
-		return col;
-		
-	}
-	
-	// 数据表格初始化
-	// 参数  table 需要初始化的表格
-	// 参数  listUrl 数据表格的接口地址
-	// 参数  tagTable 需要初始化的 label 标签
-	// 参数  tableId 给这个 layui tabel 的ID
-	function tableConfig(table,listUrl,tagTable,tableId,event,cols){
-		//第一个实例
-		table.render({
-			elem : tagTable,			// 需要初始化的 table 标签
-			id:tableId,				// table 在 layui 中的 ID 刷新时用到
-			height : 650,
-			toolbar : 'default',
-			url : listUrl //数据接口
-			,page : true //开启分页
-			,limit : 20
-			,limits : [ 10, 20, 30, 40, 50, 60, 70, 80, 90 ]
-			,cols :cols // 表头
-			,parseData : function(data) {
-				var array = data['list'];
-				return {
-					"code" : "",
-					"msg" : "查找用户列表中...",
-					"count" : array.length,
-					"data" : array
-				};
-			}
-		});
-
-		table.on('toolbar()', function(obj) { // 监听 列表 按钮事件
-			var checkStatus = table.checkStatus(obj.config.id);
-			switch (obj.event) {
-			case 'add':
-				add(event['add']);
-				break;
-			case 'delete':
-				del(checkStatus['data'],event['del']);
-				break;
-			case 'update':
-				edit(checkStatus['data'], myform,event['edit'])
-				break;
-			}
-			;
-		});
-
-	}
-	
-	// 素具表格 数据刷星
-	function reloadTable(tableName,LayTable,whereObj){
-		LayTable.reload(tableName, {
-			where: whereObj //设定异步数据接口的额外参数，任意设
-			,page: {
-			  curr: 1 //重新从第 1 页开始
-			}
-		});
 	}
 	
 </script>

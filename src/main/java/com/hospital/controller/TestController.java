@@ -14,4 +14,12 @@ public class TestController {
 		return "SSS";
 	}
 	
+	public static void main(String[] args) {
+		String test = "-ahaha-";
+		String[] tests = test.split("-");
+		System.out.println(tests.length);
+		System.out.println(tests[0]);
+		System.out.println(tests[1]);
+	}
+	
 }
