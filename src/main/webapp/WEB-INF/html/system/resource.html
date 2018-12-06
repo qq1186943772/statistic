@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<title></title>
+<link rel="shortcut icon" href="#" />
+<link href="static/js/layui/css/layui.css" type="text/css"
+	rel="stylesheet" />
+<link href="static/css/themes/default/easyui.css" type="text/css"
+	rel="stylesheet" />
+<link href="static/css/packaging.css" type="text/css" rel="stylesheet" />
+<link href="static/css/themes/icon.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="static/js/jquery.min.js"></script>
+<script type="text/javascript" src="static/js/view.js"></script>
+<script type="text/javascript" src="static/js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="static/js/layui/layui.js"></script>
+<script type="text/javascript" src="static/js/layui/packaging.js"></script>
+<script type="text/javascript" src="static/js/echarts.min.js"></script>
+<script type="text/javascript" src="static/js/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="static/js/view.js"></script>
+<style type="text/css">
+	.treeTable-empty {
+	    width: 20px;
+	    display: inline-block;
+	}
+	
+	.treeTable-icon {
+	    cursor: pointer;
+	}
+	
+	.treeTable-icon .layui-icon-triangle-d:before {
+	    content: "\e623";
+	}
+	
+	.treeTable-icon .open .layui-icon-triangle-d:before {
+	    content: "\e625";
+	    background-color: transparent;
+	}
+</style>
+</head>
+<body class="layui-layout-body">
+	<div class="layui-row" id="dataGrid">
+		<table id="demo" ></table>
+	</div>
+</body>
+<script type="text/javascript">
+
+layui.use([ 'table', 'form' ], function() {
+
+	configBody(layui.form,layui.table);
+	
+});
+
+function configBody(myform,table){
+
+	var field = ["name","sort","type","icon","url"];
+	var title = ["权限名称","权限排序","权限类型","权限图标","权限URL"];
+	var names = [{"systemId":"系统类型"},{"fatherId":"父级菜单"},{"-name":"菜单名称"},{"-url":"菜单URL"},{"icon":"菜单图标"},{"-type":"菜单类型"}];
+	var width = ["13","13","13","13"];	//  宽度比 字段 标题少一个 用作 沾满最后空余
+	var event = {"add":"roleSave","edit":"roleUpdate","del":"roleDel","sel":"resourceList"};
+	
+	var formFilter = "info";
+	
+	createSelAddHmtl(names,formFilter);		// 创建页面内容  
+	
+	formConfig(myform,formFilter);			// 初始化 form 
+	
+	layerConfig();						// 初始化弹出框 
+	
+	var cols = [];				
+	cols.push(createCols(field,title,width));
+	tableConfig(table,event['sel'],"#demo","demo",event,cols,myform,formFilter);	// 初始化 数据表格 
+	
+}
+	
+function parseData(data){
+	
+	var array = data['list'];
+	array = overwrite(array);
+	var obj = {
+			"code" : "",
+			"msg" : "查找数据中... ",
+			"count" : array.length ,
+			"data" : array
+		};
+	return obj;
+	
+}
+
+var ids = [0];
+
+function overwrite(list){
+	
+	for(var i = 0; i < list.length ; i++){
+		var row = list[i];
+		var isDir = row['id'] == "1"; 
+		var newName = '';
+		var index = 0;
+		index = LookingZero(row['id'],list,index);
+		for(var j = 0 ;j<index ;j++){
+			newName += '<span class="treeTable-empty"></span>';
+		}
+		
+		if(isDir){
+			newName += '<i class="layui-icon layui-icon-triangle-d"></i> <i class="layui-icon layui-icon-layer"></i>' ;
+		}else{
+			newName += '<i class="layui-icon layui-icon-file">' ;
+		}
+		newName += '&nbsp;&nbsp;';
+		var stat = "close"
+		for(var index in ids){
+			if(ids[index] == row['id']){
+				stat = "open";
+				break;
+			}else{
+				stat = "close";
+			}
+		}
+		
+		var ttype = isDir ? 'dir' : 'file';
+		var vg = '<span class="treeTable-icon span" lay-stat="'+stat+'" lay-id='+ row['id'] +' lay-pid='+ row['pid'] +' onclick="unfold(this)" lay-ttype="' + ttype + '">';
+			
+       
+		row['name'] =  vg + newName + row['name'] + '</span>';
+	}
+	
+	return list;
+}
+
+var ids = [0];
+
+function unfold(obj){
+	var id  = Number($(obj).attr('lay-id'));
+	var pid = Number($(obj).attr('lay-pid'));
+	
+	if($(obj).attr('lay-stat') == "close"){
+		if(ids.indexOf(id) == -1){
+			 ids.push(id);			
+		}
+		
+		
+	}else{
+		if(ids.indexOf(id) > -1 ){
+			deleteId(id);
+			ids.splice(id,1);
+		}
+	}
+	selSubmit(ids);
+}
+
+function deleteId(id){
+	var spans =  $(".span");
+	for(var i = 0;i<spans.length;i++){
+		var span = $(spans[i]);
+		if(span.attr("lay-pid") == id){
+			if(ids.indexOf(id) > -1){
+			    ids.splice(ids.indexOf(id),1);
+			    deleteId(span.attr("lay-id"));
+			}
+		}
+	}
+}
+
+function LookingZero(id,data,index){
+	for(var i = 0;i<data.length;i++){
+		var row = data[i];
+		if(row["id"] == id){
+			if(row["pid"] == '0'){
+				return index;
+			}else{
+				index += 1
+				LookingZero(row["pid"],data,index);
+			}
+		}
+	}
+	return index;
+}
+
+function selSubmit(pids){
+	var names = selName;
+	var obj = {};
+	for(var i = 0 ;i < names.length;i++){
+		var field = $("#"+names[i]).val();
+		if(field != "" && field != null){
+			obj[names[i]] = field;
+		}
+	}
+	obj['ids'] = JSON.stringify(pids);
+	reloadTable(tableObj.tableId,tableObj.tableEntity,obj);
+}
+
+</script>
+</html>

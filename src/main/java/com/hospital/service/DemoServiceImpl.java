@@ -84,7 +84,6 @@ public class DemoServiceImpl<T> implements DemoService<T> {
 	@Override
 	public PageInfo<Map<String, Object>> pageList(String str, PageInfo<Map<String, Object>> page, T form) {
 		List<Map<String, Object>> stat = null;
-		
 		try {
 			int currentPage = page.getPageNum() > 0?page.getPageNum():1;
 			PageHelper.startPage(currentPage, page.getPageSize());

@@ -70,7 +70,6 @@ function selSubmit(){
 			obj[names[i]] = field;
 		}
 	}
-	console.log(obj);
 	reloadTable(tableObj.tableId,tableObj.tableEntity,obj);
 }
 
@@ -131,12 +130,36 @@ function layerConfig(){
 // 创建 查询的 div 以及 添加的div
 // 需要添加的 input 的name ，和 input的 提示
 // name属性说明 最前面的 ‘-’ 表示 是搜索项 ，最后面的 ‘-’表示 该项 不做增加显示
-function createSelAddHmtl(names,title,formFilter){
+function createSelAddHmtl(names,formFilter){
 	
 	var sels = [];	//  搜索需要添加的
 	var adds = [];	// 	增加需要添加的
 	
+	var selTatle = [];
+	var addTatle = [];
+	
 	for(var i = 0;i < names.length;i++){
+		var obj = names[i] ;
+		var name = Object.keys(obj)[0];
+		
+		if(name.indexOf('-') == 0) {	// 判断第一个字符是 - 字符
+			name = name.substring(1,name.length+1); 			// 去掉第一个字符
+			
+			sels.push(name);	// 添加到sels
+			selTatle.push(obj['-'+name]);
+
+			adds.push(name);	// 添加到 adds
+			addTatle.push(obj['-'+name]);	
+			continue;			// 跳出本次循环
+		}
+		
+		adds.push(name);	// 如果第一个字符不是 - 则只添加到 adds 里面
+		addTatle.push(obj[name]);
+		
+	}
+	
+	
+	/*for(var i = 0;i < names.length;i++){
 		var name = names[i];
 		if(name.indexOf('-') == 0) {	// 判断第一个字符是 - 字符
 			name = name.substring(1,name.length+1); 			// 去掉第一个字符
@@ -145,10 +168,11 @@ function createSelAddHmtl(names,title,formFilter){
 			continue;			// 跳出本次循环
 		}
 		adds.push(name);	// 如果第一个字符不是 - 则只添加到 adds 里面
-	}
+	}*/
+	
 	selName = sels ;
-	createSelHtml(sels,title);
-	createAddHtml(adds,title,formFilter);
+	createSelHtml(sels,selTatle);
+	createAddHtml(adds,addTatle,formFilter);
 	
 }
 
@@ -284,7 +308,7 @@ function tableConfig(table,listUrl,tagTable,tableId,event,cols,myform,formFilter
 	table.render({
 		elem : tagTable				// 需要初始化的 table 标签
 		,id:tableId					// table 在 layui 中的 ID 刷新时用到
-		,height : 650
+		,height : 'full-70'
 		,toolbar : 'default'
 		,url : listUrl //数据接口
 		,page : true //开启分页
@@ -292,14 +316,7 @@ function tableConfig(table,listUrl,tagTable,tableId,event,cols,myform,formFilter
 		,limits : [ 10, 20, 30, 40, 50, 60, 70, 80, 90 ]
 		,cols :cols // 表头
 		,parseData : function(data) {
-			console.log(data);
-			var array = data['list'];
-			return {
-				"code" : "",
-				"msg" : "查找数据中... ",
-				"count" : array.length ,
-				"data" : array
-			};
+			return parseData(data);
 		}
 	});
 
@@ -328,4 +345,16 @@ function reloadTable(tableName,LayTable,whereObj){
 		  curr: 1 //重新从第 1 页开始
 		}
 	});
+}
+
+
+function parseData(data){
+	var array = data['list'];
+	var obj = {
+			"code" : "",
+			"msg" : "查找数据中... ",
+			"count" : array.length ,
+			"data" : array
+		};
+	return obj;
 }

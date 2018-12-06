@@ -11,6 +11,7 @@
 <link href="static/css/themes/default/easyui.css" type="text/css"
 	rel="stylesheet" />
 <link href="static/css/themes/icon.css" type="text/css" rel="stylesheet" />
+<link href="static/css/packaging.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="static/js/jquery.min.js"></script>
 <script type="text/javascript" src="static/js/view.js"></script>
 <script type="text/javascript" src="static/js/jquery.easyui.min.js"></script>
@@ -19,36 +20,10 @@
 <script type="text/javascript" src="static/js/echarts.min.js"></script>
 <script type="text/javascript" src="static/js/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="static/js/view.js"></script>
-<style type="text/css">
-html {
-	width: 100%;
-	height: 100%;
-	margin: 0px;
-	padding: 0px;
-}
-
-body {
-	width: 100%;
-	height: 100%;
-	margin: 0px;
-	padding: 0px;
-}
-
-.layui-container {
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-}
-
-.row-padding {
-	padding: 10px;
-}
-</style>
 </head>
 <body class="layui-layout-body">
 	<div class="layui-row" id="dataGrid">
-		<table id="demo" lay-filter="test"></table>
+		<table id="demo" ></table>
 	</div>
 </body>
 <script type="text/javascript">
@@ -62,7 +37,7 @@ body {
 	function configBody(myform,table){
 	
 		var field = ["code","name","remark"];
-		var names = ["-code","-name","remark"];
+		var names = [{"-code":"角色编码"},{"-name":"角色名称"},{"remark":"角色备注"}];
 		var title = ["角色编码","角色名称","角色备注"];
 		var width = ["20","20"];	//  宽度比 字段 标题少一个 用作 沾满最后空余
 		var event = {"add":"roleSave","edit":"roleUpdate","del":"roleDel","sel":"roleList"};
@@ -78,6 +53,19 @@ body {
 		var cols = [];				
 		cols.push(createCols(field,title,width));
 		tableConfig(table,event['sel'],"#demo","demo",event,cols,myform,formFilter);	// 初始化 数据表格 
+		
+	}
+	
+	function parseData(data){
+		
+		var array = data['list'];
+		var obj = {
+				"code" : "",
+				"msg" : "查找数据中... ",
+				"count" : array.length ,
+				"data" : array
+			};
+		return obj;
 		
 	}
 	
